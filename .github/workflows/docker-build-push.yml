@@ -59,7 +59,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           # TODO tag setting
-          tags: ${{ steps.prep.outputs.tags }}
+          tags: ghcr.io/${{ github.repository_owner }}/r-ver:latest
           # TODO Variableization of file
           # TODO build args
           file: dockerfiles/r-ver_4.0.5.Dockerfile
