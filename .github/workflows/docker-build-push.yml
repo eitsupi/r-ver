@@ -70,7 +70,7 @@ jobs:
           file: dockerfiles/r-ver_4.0.5.Dockerfile
           push: true
           labels: |
-            org.opencontainers.image.source=${{ github.repositoryUrl }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
