@@ -1,7 +1,9 @@
 FROM alpine/git AS sauce
 
 WORKDIR /tmp
-RUN git clone https://github.com/rocker-org/rocker-versioned2.git
+RUN git clone https://github.com/eitsupi/rocker-versioned2.git
+WORKDIR /tmp/rocker-versioned2
+RUN git checkout 9ee987b58956b51e0a7ca7965a579f0f305fb6ab
 
 
 FROM ubuntu:18.04
