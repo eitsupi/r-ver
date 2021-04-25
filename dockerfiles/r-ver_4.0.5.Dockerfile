@@ -1,4 +1,4 @@
-FROM alpine/git AS sauce
+FROM alpine/git AS source
 
 WORKDIR /tmp
 RUN git clone https://github.com/rocker-org/rocker-versioned2.git
@@ -16,7 +16,7 @@ ENV R_HOME=/usr/local/lib/R
 ENV CRAN=https://packagemanager.rstudio.com/all/__linux__/focal/latest
 ENV TZ=Etc/UTC
 
-COPY --from=sauce /tmp/rocker-versioned2/scripts /rocker_scripts
+COPY --from=source /tmp/rocker-versioned2/scripts /rocker_scripts
 
 RUN /rocker_scripts/install_R.sh
 
