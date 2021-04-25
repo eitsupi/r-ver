@@ -6,7 +6,7 @@ WORKDIR /tmp/rocker-versioned2
 RUN git checkout 9ee987b58956b51e0a7ca7965a579f0f305fb6ab
 
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 
