@@ -16,6 +16,6 @@ ENV TZ=Etc/UTC
 
 COPY --from=sauce /tmp/rocker-versioned2/scripts /rocker_scripts
 
-RUN /rocker_scripts/install_R.sh
+RUN /rocker_scripts/install_R_ppa.sh
 
 CMD ["R"]
