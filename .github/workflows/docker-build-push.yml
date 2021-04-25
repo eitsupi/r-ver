@@ -8,6 +8,10 @@ on:
       - "main"
     tags:
       - v*
+    paths:
+      - "dockerfiles/**"
+    paths-ignore:
+      - "*.md"
 
 env:
   # TODO Variableization of image name
