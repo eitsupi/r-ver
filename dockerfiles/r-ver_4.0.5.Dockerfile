@@ -4,7 +4,7 @@ WORKDIR /tmp
 RUN git clone https://github.com/rocker-org/rocker-versioned2.git
 
 
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 
