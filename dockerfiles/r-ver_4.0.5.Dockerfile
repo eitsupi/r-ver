@@ -15,7 +15,7 @@ ENV TERM=xterm
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV R_HOME=/usr/lib/R
-ENV CRAN=https://packagemanager.rstudio.com/all/__linux__/focal/latest
+ENV CRAN=https://packagemanager.rstudio.com/all/__linux__/bionic/latest
 ENV TZ=Etc/UTC
 
 COPY --from=sauce /tmp/rocker-versioned2/scripts /rocker_scripts
