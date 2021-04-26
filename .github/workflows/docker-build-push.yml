@@ -75,8 +75,8 @@ jobs:
           # TODO tag setting
           tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ matrix.r_version }}
           build-args: |
-            R_VERSION=${{ matrix.r_version }}
-            CRAN=${{ matrix.cran }}
+            VARIANT=${{ matrix.r_version }}
+            CRAN_URL=${{ matrix.cran }}
           # TODO Variableization of file
           file: dockerfiles/builder.Dockerfile
           push: true
