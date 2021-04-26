@@ -13,12 +13,21 @@ on:
 
 env:
   # TODO Variableization of image name
-  IMAGE_NAME: ${{ github.repository_owner }}/r-ver
+  IMAGE_NAME: ${{ github.repository }}/builder
 
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'Automated update') && !contains(github.event.head_commit.message, 'CI ignore')"
+
+    # TODO strategy.matrix set by a script and a setting file.
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+        - r_version: 4.0.5
+          cran: https://packagemanager.rstudio.com/all/__linux__/focal/latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -64,10 +73,12 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           # TODO tag setting
-          tags: ghcr.io/${{ github.repository_owner }}/r-ver:latest
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ matrix.r_version }}
+          build-args: |
+            R_VERSION=${{ matrix.r_version }}
+            CRAN=${{ matrix.cran }}
           # TODO Variableization of file
-          # TODO build args
-          file: dockerfiles/r-ver_4.0.5.Dockerfile
+          file: dockerfiles/builder.Dockerfile
           push: true
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
