@@ -10,6 +10,7 @@ on:
       - v*
     paths:
       - "dockerfiles/**"
+      - "buildargs.json"
 
 env:
   # TODO Variableization of image name
