@@ -6,7 +6,7 @@ RUN git clone https://github.com/rocker-org/rocker-versioned2.git
 
 FROM ubuntu:20.04
 
-ARG VARIANT=4.0.5
+ARG VARIANT=devel
 ARG CRAN_URL=https://packagemanager.rstudio.com/all/__linux__/focal/latest
 
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
