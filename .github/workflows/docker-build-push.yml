@@ -32,8 +32,8 @@ jobs:
           echo "::set-output name=matrix::${JSON//'%'/'%25'}"
 
   build_and_push:
-    runs-on: ubuntu-latest
     needs: version_check
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix: ${{fromJson(needs.version_check.outputs.matrix)}}
