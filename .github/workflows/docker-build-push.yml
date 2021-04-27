@@ -22,10 +22,13 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-    - id: set_matrix
-      run: |
-        JSON=$(cat ./buildargs.json)
-        echo "::set-output name=matrix::${JSON//'%'/'%25'}"
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - id: set_matrix
+        run: |
+          JSON=$(cat ./buildargs.json)
+          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
 
   build_and_push:
     runs-on: ubuntu-latest
