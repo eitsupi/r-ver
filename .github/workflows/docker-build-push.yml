@@ -39,7 +39,7 @@ jobs:
     steps:
       - run: |
           echo "${{ needs.generate_matrix.outputs.matrix }}"
-          echo "$${{fromJson(needs.generate_matrix.outputs.matrix)}}"
+          echo "${{fromJson(needs.generate_matrix.outputs.matrix)}}"
 
   build_and_push:
     needs: generate_matrix
