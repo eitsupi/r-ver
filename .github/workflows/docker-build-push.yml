@@ -10,7 +10,9 @@ on:
       - v*
     paths:
       - "dockerfiles/**"
+      - ".github/workflows/docker-build-push.yml"
       - "buildargs.json"
+  pull_request:
 
 env:
   # TODO Variableization of image name
@@ -28,11 +30,13 @@ jobs:
 
       - id: set_matrix
         run: |
-          JSON=$(cat ./buildargs.json | tr -d '\n')
-          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
+          JSON=$(cat ./buildargs.json | tr -d '\n' | tr -d ' ')
+          echo "JSON matrix: $JSON"
+          echo "::set-output name=matrix::${JSON}"
 
   build_and_push:
     needs: version_check
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
