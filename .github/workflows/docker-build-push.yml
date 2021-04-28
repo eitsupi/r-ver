@@ -26,17 +26,26 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v2
-      - id: set_matrix
+      - id: set-matrix
         run: |
-          JSON=$(jq -r 'tostring' ./buildargs.json)
-          echo "::set-output name=matrix::$JSON"
-          echo ${{ steps.set-matrix.outputs.matrix }}
+          content=$(jq -r 'tostring' buildargs.json)
+          echo "::set-output name=matrix::$content"
+          echo $content
+
+  echo_matrix:
+    needs: generate_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ needs.generate_matrix.outputs.matrix }}"
+          echo "${{fromJson(needs.generate_matrix.outputs.matrix)}}"
 
   build_and_push:
     needs: generate_matrix
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
 
     steps:
