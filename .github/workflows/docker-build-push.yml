@@ -35,7 +35,7 @@ jobs:
           JSON="${JSON//'%'/'%0A'}"
           JSON="${JSON//'%'/'%0D'}"
           echo "JSON matrix: $JSON"
-          echo "::set-output name=matrix::${JSON}"
+          echo "::set-output name=matrix::$JSON"
 
   build_and_push:
     needs: version_check
