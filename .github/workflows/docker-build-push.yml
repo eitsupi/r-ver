@@ -19,7 +19,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}/builder
 
 jobs:
-  version_check:
+  generate_matrix:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'Automated update') && !contains(github.event.head_commit.message, 'CI ignore')"
     outputs:
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
-      matrix: ${{fromJson(needs.version_check.outputs.matrix)}}
+      matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
 
     steps:
       - name: Checkout
