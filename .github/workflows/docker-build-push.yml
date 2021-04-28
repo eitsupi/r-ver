@@ -30,7 +30,7 @@ jobs:
       - id: set_matrix
         run: |
           content=$(jq -r 'tostring' buildargs.json)
-          echo "::set-output name=matrix::{\"include\":[{\"r_version\":\"4.0.5\",\"cran\":\"https://packagemanager.rstudio.com/all/__linux__/focal/latest\"},{\"r_version\":\"devel\",\"cran\":\"https://cloud.r-project.org\"}]}"
+          echo "::set-output name=matrix::$content"
           echo $content
 
   echo_matrix:
