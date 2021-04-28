@@ -27,7 +27,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v2
-      - id: set_matrix
+      - id: set-matrix
         run: |
           content=$(jq -r 'tostring' buildargs.json)
           echo "::set-output name=matrix::$content"
