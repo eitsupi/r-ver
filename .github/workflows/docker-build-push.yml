@@ -29,8 +29,8 @@ jobs:
       - uses: actions/checkout@v2
       - id: set_matrix
         run: |
-          JSON=$(jq -r 'tostring' ./buildargs.json)
-          echo "::set-output name=matrix::$JSON"
+          content=$(jq -r 'tostring' ./buildargs.json)
+          echo "::set-output name=matrix::$content"
           echo ${{ steps.set-matrix.outputs.matrix }}
 
   build_and_push:
