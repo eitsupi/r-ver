@@ -33,7 +33,7 @@ jobs:
           echo ${{ steps.set-matrix.outputs.matrix }}
 
   build_and_push:
-    needs: version_check
+    needs: generate_matrix
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     strategy:
