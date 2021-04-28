@@ -31,7 +31,14 @@ jobs:
         run: |
           content=$(jq -r 'tostring' buildargs.json)
           echo "::set-output name=matrix::$content"
-          echo ${{ steps.set-matrix.outputs.matrix }}
+
+  echo_matrix:
+    needs: generate_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ needs.generate_matrix.outputs.matrix }}"
+          echo "$${{fromJson(needs.generate_matrix.outputs.matrix)}}"
 
   build_and_push:
     needs: generate_matrix
