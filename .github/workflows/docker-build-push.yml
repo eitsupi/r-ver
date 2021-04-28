@@ -30,7 +30,10 @@ jobs:
 
       - id: set_matrix
         run: |
-          JSON=$(cat ./buildargs.json | tr -d '\n' | tr -d ' ')
+          JSON=$(cat ./buildargs.json)
+          JSON="${JSON//'%'/'%25'}"
+          JSON="${JSON//'%'/'%0A'}"
+          JSON="${JSON//'%'/'%0D'}"
           echo "JSON matrix: $JSON"
           echo "::set-output name=matrix::${JSON}"
 
