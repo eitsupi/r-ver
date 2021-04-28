@@ -31,6 +31,7 @@ jobs:
         run: |
           content=$(jq -r 'tostring' buildargs.json)
           echo "::set-output name=matrix::$content"
+          echo $content
 
   echo_matrix:
     needs: generate_matrix
