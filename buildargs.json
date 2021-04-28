@@ -2,11 +2,11 @@
     "include": [
         {
             "r_version": "4.0.5",
-            "cran": ""
+            "cran": "https://packagemanager.rstudio.com/all/__linux__/focal/latest"
         },
         {
             "r_version": "devel",
-            "cran": ""
+            "cran": "https://cloud.r-project.org"
         }
     ]
 }
