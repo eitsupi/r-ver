@@ -25,17 +25,12 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v2
       - id: set_matrix
         run: |
-          JSON=$(cat ./buildargs.json)
-          JSON="${JSON//'%'/'%25'}"
-          JSON="${JSON//'%'/'%0A'}"
-          JSON="${JSON//'%'/'%0D'}"
-          echo "JSON matrix: $JSON"
+          JSON=$(jq -r 'tostring' ./buildargs.json)
           echo "::set-output name=matrix::$JSON"
+          echo ${{ steps.set-matrix.outputs.matrix }}
 
   build_and_push:
     needs: version_check
