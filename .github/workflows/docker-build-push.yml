@@ -37,6 +37,7 @@ jobs:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
 
     steps:
