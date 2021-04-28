@@ -10,6 +10,7 @@ on:
       - v*
     paths:
       - "dockerfiles/**"
+      - ".github/workflows/docker-build-push.yml"
       - "buildargs.json"
   pull_request:
 
