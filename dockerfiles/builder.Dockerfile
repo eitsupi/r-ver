@@ -19,7 +19,7 @@ ENV R_HOME=/usr/local/lib/R
 ENV CRAN=${CRAN_URL}
 ENV TZ=Etc/UTC
 
-COPY --from=source /tmp/rocker-versioned2/scripts /rocker_scripts
+COPY --from=source /tmp/rocker-versioned2/scripts /rocker_scripts/install_R.sh
 
 RUN /rocker_scripts/install_R.sh
 

@@ -88,6 +88,7 @@ jobs:
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
+          pull: true
           push: true
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
