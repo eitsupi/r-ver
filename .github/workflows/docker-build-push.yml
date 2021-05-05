@@ -10,6 +10,7 @@ on:
       - v*
     paths:
       - "dockerfiles/**"
+      - "scripts/**"
       - ".github/workflows/docker-build-push.yml"
       - "buildargs.json"
   pull_request:
@@ -115,7 +116,6 @@ jobs:
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
           target: r-ver
-          pull: true
           push: true
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
