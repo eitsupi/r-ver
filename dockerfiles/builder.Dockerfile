@@ -4,7 +4,7 @@ WORKDIR /tmp
 RUN git clone https://github.com/rocker-org/rocker-versioned2.git
 
 
-FROM ubuntu:20.04
+FROM ubuntu:20.04 AS builder
 
 ARG VARIANT=devel
 ARG CRAN_URL=https://cloud.r-project.org
@@ -24,3 +24,10 @@ COPY --from=source /tmp/rocker-versioned2/scripts/install_R.sh /rocker_scripts/i
 RUN /rocker_scripts/install_R.sh
 
 CMD ["R"]
+
+FROM builder AS r-ver
+
+COPY --from=source /tmp/rocker-versioned2/scripts/ /rocker_scripts/
+COPY scripts /tmp/scripts
+
+RUN /tmp/scripts/fix_rprofile.sh

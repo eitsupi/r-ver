@@ -88,6 +88,7 @@ jobs:
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
+          target: builder
           pull: true
           push: true
           labels: |
