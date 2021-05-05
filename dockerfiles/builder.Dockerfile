@@ -1,8 +1,12 @@
+# source, copy scripts from rocker-org/rocker-versioned2 repository
+
 FROM alpine/git AS source
 
 WORKDIR /tmp
 RUN git clone https://github.com/rocker-org/rocker-versioned2.git
 
+
+# builder, install R
 
 FROM ubuntu:20.04 AS builder
 
@@ -24,6 +28,9 @@ COPY --from=source /tmp/rocker-versioned2/scripts/install_R.sh /rocker_scripts/i
 RUN /rocker_scripts/install_R.sh
 
 CMD ["R"]
+
+
+# r-ver, compatible with rocker/r-ver
 
 FROM builder AS r-ver
 
