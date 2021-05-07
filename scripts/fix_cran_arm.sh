@@ -9,3 +9,5 @@ if [ "$(uname -m)" = "aarch64" ]; then
     export CRAN=${CRAN/"__linux__/$UBUNTU_VERSION/"/""}
     echo 'options(repos = "'${CRAN}'")' >> ${R_HOME}/etc/Rprofile.site
 fi
+
+exec "$@"
