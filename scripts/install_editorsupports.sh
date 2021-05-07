@@ -39,6 +39,7 @@ R_PACKAGES=
 ## Add radian dependencies and radian to the list
 if [ "${INSTALL_RADIAN}" = "true" ]; then
     APT_PACKAGES="${APT_PACKAGES} \
+        python3-dev \
         python3-pip"
     PYTHON_PACKAGES="${PYTHON_PACKAGES=} \
         radian"
