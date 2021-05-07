@@ -37,4 +37,4 @@ FROM builder AS r-ver
 COPY --from=source /tmp/rocker-versioned2/scripts/ /rocker_scripts/
 COPY scripts /tmp/scripts
 
-RUN /tmp/scripts/fix_rprofile.sh
+RUN /tmp/scripts/fix_cran_arm.sh
