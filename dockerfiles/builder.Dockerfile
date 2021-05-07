@@ -40,3 +40,19 @@ COPY scripts /tmp/scripts
 RUN /tmp/scripts/fix_cran_arm.sh
 
 ENTRYPOINT [ "/tmp/scripts/entrypoint_fix_cran_arm.sh" ]
+
+
+# editorsupports, install packages for IDE
+
+FROM r-ver AS editorsupports
+
+SHELL ["/bin/bash", "-c"]
+
+RUN source /tmp/scripts/entrypoint_fix_cran_arm.sh && /tmp/scripts/install_editorsupports.sh
+
+
+# tidyverse, install the tidyverse packages
+
+FROM editorsupports AS tidyverse
+
+RUN source /tmp/scripts/entrypoint_fix_cran_arm.sh && /rocker_scripts/install_tidyverse.sh
