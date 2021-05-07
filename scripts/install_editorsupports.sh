@@ -48,6 +48,7 @@ fi
 ## Add devtools dependencies and devtools to the list
 if [ "${INSTALL_DEVTOOLS}" = "true" ]; then
     APT_PACKAGES="${APT_PACKAGES} \
+        libgit2-dev \
         libcurl4-openssl-dev \
         libxml2-dev \
         libssl-dev"
