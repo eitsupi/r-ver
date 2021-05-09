@@ -78,15 +78,17 @@ jobs:
 
       - name: Build and push builder
         uses: docker/build-push-action@v2
+        env:
+          STAGE: builder
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/builder:${{ matrix.r_version }}
+          tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           build-args: |
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
-          target: builder
+          target: ${{ env.STAGE }}
           pull: true
           push: true
           labels: |
@@ -94,7 +96,7 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
-            org.opencontainers.image.title=${{ github.repository }}/builder:${{ matrix.r_version }}
+            org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -108,6 +110,8 @@ jobs:
 
       - name: Build and push r-ver
         uses: docker/build-push-action@v2
+        env:
+          STAGE: r-ver
         with:
           context: .
           platforms: linux/amd64,linux/arm64
@@ -116,7 +120,7 @@ jobs:
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
-          target: r-ver
+          target: ${{ env.STAGE }}
           push: true
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
@@ -137,22 +141,24 @@ jobs:
 
       - name: Build and push editorsupports
         uses: docker/build-push-action@v2
+        env:
+          STAGE: editorsupports
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/editorsupports:${{ matrix.r_version }}
+          tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           build-args: |
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
-          target: editorsupports
+          target: ${{ env.STAGE }}
           push: true
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
-            org.opencontainers.image.title=${{ github.repository }}/editorsupports:${{ matrix.r_version }}
+            org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -166,22 +172,24 @@ jobs:
 
       - name: Build and push tidyverse
         uses: docker/build-push-action@v2
+        env:
+          STAGE: tidyverse
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/tidyverse:${{ matrix.r_version }}
+          tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           build-args: |
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
-          target: tidyverse
+          target: ${{ env.STAGE }}
           push: true
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
-            org.opencontainers.image.title=${{ github.repository }}/tidyverse:${{ matrix.r_version }}
+            org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
