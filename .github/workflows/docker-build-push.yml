@@ -12,7 +12,7 @@ on:
       - "dockerfiles/**"
       - "scripts/**"
       - ".github/workflows/docker-build-push.yml"
-      - "buildargs.json"
+      - "buildargs/**"
   pull_request:
 
 jobs:
