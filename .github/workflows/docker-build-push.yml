@@ -12,7 +12,7 @@ on:
       - "dockerfiles/**"
       - "scripts/**"
       - ".github/workflows/docker-build-push.yml"
-      - "buildargs.json"
+      - "buildargs/**"
   pull_request:
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
       - id: set-matrix
         run: |
-          content=$(jq -r 'tostring' buildargs.json)
+          content=$(jq -r 'tostring' buildargs/versions.json)
           echo "::set-output name=matrix::$content"
           echo $content
 

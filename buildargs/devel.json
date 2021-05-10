@@ -1,0 +1,8 @@
+{
+  "include": [
+    {
+      "r_version": "devel",
+      "cran": "https://cloud.r-project.org"
+    }
+  ]
+}
