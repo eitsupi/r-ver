@@ -8,6 +8,7 @@ INSTALL_RADIAN=${1:-"true"}
 INSTALL_DEVTOOLS=${2:-"true"}
 INSTALL_LANGUAGESERVER=${3:-"true"}
 INSTALL_HTTPGD=${4:-"true"}
+INSTALL_HERE=${5:-"true"}
 
 ## The httpgd package had not be able to be installed from CRAN before R 4.0.3 release
 if [ "${R_VERSION}" = "4.0.0" ] || [ "${R_VERSION}" = "4.0.1" ] || [ "${R_VERSION}" = "4.0.2" ]; then
@@ -72,6 +73,12 @@ if [ "${INSTALL_HTTPGD}" = "true" ]; then
         libfontconfig1-dev"
     R_PACKAGES="${R_PACKAGES=} \
         httpgd"
+fi
+
+## Add httpgd dependencies and httpgd to the list
+if [ "${INSTALL_HERE}" = "true" ]; then
+    R_PACKAGES="${R_PACKAGES=} \
+        here"
 fi
 
 # Install packages
