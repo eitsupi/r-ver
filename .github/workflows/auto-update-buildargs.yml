@@ -21,7 +21,6 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3.9.1
         with:
-          token: ${{ secrets.CR_PAT }}
           commit-message: Automated update for build args
           signoff: false
           branch: auto-update/buildargs
