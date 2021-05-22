@@ -18,7 +18,7 @@ on:
 jobs:
   generate_matrix:
     runs-on: ubuntu-latest
-    if: "github.actor!= 'dependabot[bot]' && !contains(github.event.head_commit.message, 'Automated update') && !contains(github.event.head_commit.message, 'CI ignore')"
+    if: "github.actor!= 'dependabot[bot]' && !contains(github.event.head_commit.message, 'CI ignore')"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -98,16 +98,10 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
             org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
-          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-from: |
+            type=local,src=/tmp/.buildx-cache
+            type=local,src=/tmp/.buildx-cache-new
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-
-      # Temp fix
-      # https://github.com/docker/build-push-action/issues/252
-      # https://github.com/moby/buildkit/issues/1896
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
       - name: Build and push r-ver
         uses: docker/build-push-action@v2.4.0
@@ -129,16 +123,10 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
             org.opencontainers.image.title=${{ github.repository }}:${{ matrix.r_version }}
-          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-from: |
+            type=local,src=/tmp/.buildx-cache
+            type=local,src=/tmp/.buildx-cache-new
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-
-      # Temp fix
-      # https://github.com/docker/build-push-action/issues/252
-      # https://github.com/moby/buildkit/issues/1896
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
       - name: Build and push editorsupports
         uses: docker/build-push-action@v2.4.0
@@ -160,16 +148,10 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
             org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
-          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-from: |
+            type=local,src=/tmp/.buildx-cache
+            type=local,src=/tmp/.buildx-cache-new
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-
-      # Temp fix
-      # https://github.com/docker/build-push-action/issues/252
-      # https://github.com/moby/buildkit/issues/1896
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
       - name: Build and push tidyverse
         uses: docker/build-push-action@v2.4.0
@@ -191,7 +173,9 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
             org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
-          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-from: |
+            type=local,src=/tmp/.buildx-cache
+            type=local,src=/tmp/.buildx-cache-new
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
       # Temp fix
