@@ -89,6 +89,8 @@ jobs:
           fi
           echo ::set-output name=image::${DOCKER_IMAGE}
           echo ::set-output name=tags::${TAGS}
+          echo ${DOCKER_IMAGE}
+          echo ${TAGS}
 
       - name: Build and push builder
         uses: docker/build-push-action@v2.5.0
@@ -128,6 +130,8 @@ jobs:
           fi
           echo ::set-output name=image::${DOCKER_IMAGE}
           echo ::set-output name=tags::${TAGS}
+          echo ${DOCKER_IMAGE}
+          echo ${TAGS}
 
       - name: Build and push r-ver
         uses: docker/build-push-action@v2.5.0
@@ -166,6 +170,8 @@ jobs:
           fi
           echo ::set-output name=image::${DOCKER_IMAGE}
           echo ::set-output name=tags::${TAGS}
+          echo ${DOCKER_IMAGE}
+          echo ${TAGS}
 
       - name: Build and push editorsupports
         uses: docker/build-push-action@v2.5.0
@@ -204,6 +210,8 @@ jobs:
           fi
           echo ::set-output name=image::${DOCKER_IMAGE}
           echo ::set-output name=tags::${TAGS}
+          echo ${DOCKER_IMAGE}
+          echo ${TAGS}
 
       - name: Build and push tidyverse
         uses: docker/build-push-action@v2.5.0
