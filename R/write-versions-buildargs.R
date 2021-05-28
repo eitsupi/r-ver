@@ -1,41 +1,31 @@
 #!/usr/bin/env Rscript
 
+# This script only works on Ubuntu.
+# This script needs development version of pak package (>=0.1.2.9001).
+
 library(rversions)
 library(jsonlite)
 library(pak)
 library(dplyr)
 library(readr)
+library(httr)
+library(purrr)
+library(glue)
+library(tidyr)
+library(tidyselect)
 
+# s6_ver needs to be set manually.
+# https://github.com/rocker-org/rocker-versioned2/issues/162#issuecomment-847145824
+s6_ver <- "v2.1.0.2"
 
-write_buildargs_json <- function(path, min_r_version = 4.0) {
-    js <- .buildargs_list(min_r_version)
-    jsonlite::write_json(js, path = path, pretty = TRUE)
-}
-
-.buildargs_list <- function(min_r_version) {
-    df <- dplyr::mutate(
-        dplyr::rowwise(.r_versions_data(min_r_version)),
-        cran = .latest_rspm_cran_url_linux(freeze_date, ubuntu_codename)
-    )[, c("version", "ubuntu_codename", "cran", "container_tags")]
-
-    js <- list()
-    js$include <- dplyr::rename(df, r_version = version)
-
-    return(js)
-}
 
 .r_versions_data <- function(min_version) {
     all_data <- rversions::r_versions()
     is_ge_min_ver <- readr::parse_number(all_data$version) >= min_version
     all_data$release_date <- as.Date(all_data$date)
     all_data$freeze_date <- dplyr::lead(all_data$release_date, 1) - 1
-    all_data$container_tags <- dplyr::if_else(
-        dplyr::row_number(all_data$version) == nrow(all_data),
-        paste0(all_data$version, ",latest"),
-        all_data$version
-    )
     r_versions_data <- dplyr::mutate(
-        dplyr::rowwise(all_data[is_ge_min_ver, ]),
+        dplyr::rowwise(all_data[is_ge_min_ver, c("version", "release_date", "freeze_date")]),
         ubuntu_codename = .latest_ubuntu_lts_series(release_date)
     )
 
@@ -83,5 +73,77 @@ write_buildargs_json <- function(path, min_r_version = 4.0) {
     return(repo_data[repo_data$name == "CRAN", ]$ok)
 }
 
+.get_github_commit_date <- function(url) {
+    httr::GET(url, httr::add_headers(accept = "application/vnd.github.v3+json")) %>%
+        httr::content() %>%
+        purrr::pluck("commit", "committer", "date") %>%
+        as.Date()
+}
 
-write_buildargs_json("buildargs/versions.json", min_r_version = 4.0)
+rstudio_versions <- function(n_versions = 10) {
+    data <- httr::GET(
+        "https://api.github.com/repos/rstudio/rstudio/tags",
+        httr::add_headers(accept = "application/vnd.github.v3+json"),
+        query = list(per_page = n_versions)
+    ) %>%
+        httr::content() %>%
+        {
+            data.frame(
+                rstudio_version = purrr::map_chr(., "name") %>% substring(2),
+                commit_url = purrr::map_chr(., c("commit", "url"))
+            )
+        } %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(commit_date = .get_github_commit_date(commit_url)) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(!commit_url) %>%
+        dplyr::arrange(commit_date)
+
+    return(data)
+}
+
+.is_rstudio_deb_url <- function(rstudio_version, ubuntu_codename) {
+    os_ver <- dplyr::case_when(
+        ubuntu_codename %in% c("bionic", "focal") ~ "bionic",
+        ubuntu_codename %in% c("xenial") ~ "xenial"
+    )
+
+    is_available <- glue::glue(
+        "https://s3.amazonaws.com/rstudio-ide-build/server/{os_ver}/amd64/rstudio-server-{rstudio_version}-amd64.deb"
+    ) %>%
+        httr::HEAD() %>%
+        httr::http_status() %>%
+        purrr::pluck("category") %>%
+        {
+            ifelse(. == "Success", TRUE, FALSE)
+        }
+
+    return(is_available)
+}
+
+
+github_rstudio_tags <- rstudio_versions(n_versions = 10)
+
+df_args <- .r_versions_data(min_version = 4.0) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+        cran = .latest_rspm_cran_url_linux(freeze_date, ubuntu_codename),
+        s6_version = s6_ver
+    ) %>%
+    dplyr::ungroup() %>%
+    tidyr::expand_grid(github_rstudio_tags) %>%
+    dplyr::filter(freeze_date > commit_date | is.na(freeze_date)) %>%
+    dplyr::rowwise() %>%
+    dplyr::filter(.is_rstudio_deb_url(rstudio_version, ubuntu_codename)) %>%
+    dplyr::ungroup() %>%
+    dplyr::group_by(version) %>%
+    dplyr::slice_tail(n = 1) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+        r_latest = dplyr::if_else(dplyr::row_number() == nrow(.), TRUE, FALSE)
+    ) %>%
+    dplyr::rename(r_version = version) %>%
+    dplyr::select(!tidyselect::ends_with("_date"))
+
+list(include = df_args) %>%
+    jsonlite::write_json(path = "buildargs/versions.json", pretty = TRUE)
