@@ -103,7 +103,7 @@ jobs:
           build-args: |
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
-          file: dockerfiles/builder.Dockerfile
+          file: dockerfiles/${{ matrix.ubuntu_codename }}.Dockerfile
           target: ${{ env.STAGE }}
           pull: true
           push: true
@@ -144,7 +144,7 @@ jobs:
           build-args: |
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
-          file: dockerfiles/builder.Dockerfile
+          file: dockerfiles/${{ matrix.ubuntu_codename }}.Dockerfile
           target: ${{ env.STAGE }}
           push: true
           labels: |
@@ -184,7 +184,7 @@ jobs:
           build-args: |
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
-          file: dockerfiles/builder.Dockerfile
+          file: dockerfiles/${{ matrix.ubuntu_codename }}.Dockerfile
           target: ${{ env.STAGE }}
           push: true
           labels: |
@@ -224,7 +224,7 @@ jobs:
           build-args: |
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
-          file: dockerfiles/builder.Dockerfile
+          file: dockerfiles/${{ matrix.ubuntu_codename }}.Dockerfile
           target: ${{ env.STAGE }}
           push: true
           labels: |
