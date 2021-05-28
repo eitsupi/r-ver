@@ -99,7 +99,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.prep-builder.outputs.tags }}
           build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -139,7 +138,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.prep-r-ver.outputs.tags }}
           build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -178,7 +176,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.prep-editorsupports.outputs.tags }}
           build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -217,7 +214,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.prep-tidyverse.outputs.tags }}
           build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
