@@ -16,7 +16,7 @@ write_buildargs_json <- function(path, min_r_version = 4.0) {
     df <- dplyr::mutate(
         dplyr::rowwise(.r_versions_data(min_r_version)),
         cran = .latest_rspm_cran_url_linux(freeze_date, ubuntu_codename)
-    )[, c("version", "ubuntu_codename", "cran")]
+    )[, c("version", "ubuntu_codename", "cran", "container_tags")]
 
     js <- list()
     js$include <- dplyr::rename(df, r_version = version)
@@ -29,8 +29,13 @@ write_buildargs_json <- function(path, min_r_version = 4.0) {
     is_ge_min_ver <- readr::parse_number(all_data$version) >= min_version
     all_data$release_date <- as.Date(all_data$date)
     all_data$freeze_date <- dplyr::lead(all_data$release_date, 1) - 1
+    all_data$container_tags <- dplyr::if_else(
+        dplyr::row_number(all_data$version) == nrow(all_data),
+        paste0(all_data$version, ",latest"),
+        all_data$version
+    )
     r_versions_data <- dplyr::mutate(
-        dplyr::rowwise(all_data[is_ge_min_ver, c("version", "release_date", "freeze_date")]),
+        dplyr::rowwise(all_data[is_ge_min_ver, ]),
         ubuntu_codename = .latest_ubuntu_lts_series(release_date)
     )
 
