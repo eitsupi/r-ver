@@ -77,6 +77,19 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
 
+      - name: Prepare builder
+        id: prep-builder
+        env:
+          STAGE: builder
+        run: |
+          DOCKER_IMAGE="ghcr.io/${{ github.repository }}/${{ env.STAGE }}"
+          TAGS="$DOCKER_IMAGE:${{ matrix.r_version }}"
+          if "${{ matrix.r_latest }}"; then
+            TAGS="$TAGS,$DOCKER_IMAGE:latest"
+          fi
+          echo ::set-output name=image::${DOCKER_IMAGE}
+          echo ::set-output name=tags::${TAGS}
+
       - name: Build and push builder
         uses: docker/build-push-action@v2.5.0
         env:
@@ -84,8 +97,9 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
+          tags: ${{ steps.prep-builder.outputs.tags }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -97,11 +111,24 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
-            org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
+            org.opencontainers.image.title=${{ steps.prep-builder.outputs.image }}:${{ matrix.r_version }}
           cache-from: |
             type=local,src=/tmp/.buildx-cache
             type=local,src=/tmp/.buildx-cache-new
           cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Prepare r-ver
+        id: prep-r-ver
+        env:
+          STAGE: r-ver
+        run: |
+          DOCKER_IMAGE="ghcr.io/${{ github.repository }}"
+          TAGS="$DOCKER_IMAGE:${{ matrix.r_version }}"
+          if "${{ matrix.r_latest }}"; then
+            TAGS="$TAGS,$DOCKER_IMAGE:latest"
+          fi
+          echo ::set-output name=image::${DOCKER_IMAGE}
+          echo ::set-output name=tags::${TAGS}
 
       - name: Build and push r-ver
         uses: docker/build-push-action@v2.5.0
@@ -110,8 +137,9 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}:${{ matrix.r_version }}
+          tags: ${{ steps.prep-r-ver.outputs.tags }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -122,11 +150,24 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
-            org.opencontainers.image.title=${{ github.repository }}:${{ matrix.r_version }}
+            org.opencontainers.image.title=${{ steps.prep-r-ver.outputs.image }}:${{ matrix.r_version }}
           cache-from: |
             type=local,src=/tmp/.buildx-cache
             type=local,src=/tmp/.buildx-cache-new
           cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Prepare editorsupports
+        id: prep-editorsupports
+        env:
+          STAGE: editorsupports
+        run: |
+          DOCKER_IMAGE="ghcr.io/${{ github.repository }}/${{ env.STAGE }}"
+          TAGS="$DOCKER_IMAGE:${{ matrix.r_version }}"
+          if "${{ matrix.r_latest }}"; then
+            TAGS="$TAGS,$DOCKER_IMAGE:latest"
+          fi
+          echo ::set-output name=image::${DOCKER_IMAGE}
+          echo ::set-output name=tags::${TAGS}
 
       - name: Build and push editorsupports
         uses: docker/build-push-action@v2.5.0
@@ -135,8 +176,9 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
+          tags: ${{ steps.prep-editorsupports.outputs.tags }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -147,11 +189,24 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
-            org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
+            org.opencontainers.image.title=${{ steps.prep-editorsupports.outputs.image }}:${{ matrix.r_version }}
           cache-from: |
             type=local,src=/tmp/.buildx-cache
             type=local,src=/tmp/.buildx-cache-new
           cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Prepare tidyverse
+        id: prep-tidyverse
+        env:
+          STAGE: tidyverse
+        run: |
+          DOCKER_IMAGE="ghcr.io/${{ github.repository }}/${{ env.STAGE }}"
+          TAGS="$DOCKER_IMAGE:${{ matrix.r_version }}"
+          if "${{ matrix.r_latest }}"; then
+            TAGS="$TAGS,$DOCKER_IMAGE:latest"
+          fi
+          echo ::set-output name=image::${DOCKER_IMAGE}
+          echo ::set-output name=tags::${TAGS}
 
       - name: Build and push tidyverse
         uses: docker/build-push-action@v2.5.0
@@ -160,8 +215,9 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
+          tags: ${{ steps.prep-tidyverse.outputs.tags }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -172,7 +228,7 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
-            org.opencontainers.image.title=${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
+            org.opencontainers.image.title=${{ steps.prep-tidyverse.outputs.image }}:${{ matrix.r_version }}
           cache-from: |
             type=local,src=/tmp/.buildx-cache
             type=local,src=/tmp/.buildx-cache-new
