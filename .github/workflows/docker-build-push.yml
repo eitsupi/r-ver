@@ -18,7 +18,7 @@ on:
 jobs:
   generate_matrix:
     runs-on: ubuntu-latest
-    if: "github.actor!= 'dependabot[bot]' && !contains(github.event.head_commit.message, 'CI ignore')"
+    if: "!contains(github.event.head_commit.message, 'dependabot[bot]') && !contains(github.event.head_commit.message, 'CI ignore')"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
