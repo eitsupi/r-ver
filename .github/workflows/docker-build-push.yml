@@ -86,6 +86,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -112,6 +113,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository }}:${{ matrix.r_version }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -137,6 +139,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
@@ -162,6 +165,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository }}/${{ env.STAGE }}:${{ matrix.r_version }}
           build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_codename }}
             VARIANT=${{ matrix.r_version }}
             CRAN_URL=${{ matrix.cran }}
           file: dockerfiles/builder.Dockerfile
