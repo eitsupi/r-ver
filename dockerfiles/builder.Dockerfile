@@ -8,7 +8,9 @@ RUN git clone https://github.com/rocker-org/rocker-versioned2.git
 
 # builder, install R
 
-FROM ubuntu:20.04 AS builder
+ARG UBUNTU_VERSION=latest
+
+FROM ubuntu:${UBUNTU_VERSION} AS builder
 
 ARG VARIANT=devel
 ARG CRAN_URL=https://cloud.r-project.org
