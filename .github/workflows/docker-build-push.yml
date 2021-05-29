@@ -195,7 +195,7 @@ jobs:
             org.opencontainers.image.title=${{ steps.prep-editorsupports.outputs.image }}:${{ matrix.r_version }}
           cache-from: |
             type=registry,ref=${{ steps.prep-r-ver.outputs.image }}:${{ matrix.r_version }}
-            type=registry,ref=${{ steps.prep-r-editorsupports.outputs.image }}:${{ matrix.r_version }}
+            type=registry,ref=${{ steps.prep-editorsupports.outputs.image }}:${{ matrix.r_version }}
           cache-to: type=inline
 
       - name: Prepare tidyverse
@@ -234,6 +234,6 @@ jobs:
             org.opencontainers.image.description=A Docker image of R version ${{ matrix.r_version }}
             org.opencontainers.image.title=${{ steps.prep-tidyverse.outputs.image }}:${{ matrix.r_version }}
           cache-from: |
-            type=registry,ref=${{ steps.prep-r-editorsupports.outputs.image }}:${{ matrix.r_version }}
+            type=registry,ref=${{ steps.prep-editorsupports.outputs.image }}:${{ matrix.r_version }}
             type=registry,ref=${{ steps.prep-r-tidyverse.outputs.image }}:${{ matrix.r_version }}
           cache-to: type=inline
