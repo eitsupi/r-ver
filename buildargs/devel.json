@@ -2,7 +2,9 @@
   "include": [
     {
       "r_version": "devel",
-      "cran": "https://cloud.r-project.org"
+      "ubuntu_codename": "focal",
+      "cran": "https://cloud.r-project.org",
+      "rstudio_version": "latest"
     }
   ]
 }

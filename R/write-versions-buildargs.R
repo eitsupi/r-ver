@@ -14,10 +14,6 @@ library(glue)
 library(tidyr)
 library(tidyselect)
 
-# s6_ver needs to be set manually.
-# https://github.com/rocker-org/rocker-versioned2/issues/162#issuecomment-847145824
-s6_ver <- "v2.1.0.2"
-
 
 .r_versions_data <- function(min_version) {
     all_data <- rversions::r_versions()
@@ -128,7 +124,6 @@ df_args <- .r_versions_data(min_version = 4.0) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
         cran = .latest_rspm_cran_url_linux(freeze_date, ubuntu_codename),
-        s6_version = s6_ver
     ) %>%
     dplyr::ungroup() %>%
     tidyr::expand_grid(github_rstudio_tags) %>%
