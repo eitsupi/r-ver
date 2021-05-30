@@ -16,27 +16,29 @@ library(tidyselect)
 
 
 .r_versions_data <- function(min_version) {
-    all_data <- rversions::r_versions()
-    is_ge_min_ver <- readr::parse_number(all_data$version) >= min_version
-    all_data$release_date <- as.Date(all_data$date)
-    all_data$freeze_date <- dplyr::lead(all_data$release_date, 1) - 1
-    r_versions_data <- dplyr::mutate(
-        dplyr::rowwise(all_data[is_ge_min_ver, c("version", "release_date", "freeze_date")]),
-        ubuntu_codename = .latest_ubuntu_lts_series(release_date)
-    )
+    data <- rversions::r_versions() %>%
+        dplyr::mutate(
+            release_date = as.Date(date),
+            freeze_date = dplyr::lead(release_date, 1) - 1
+        ) %>%
+        dplyr::filter(readr::parse_number(version) >= min_version) %>%
+        dplyr::select(version, release_date, freeze_date) %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(ubuntu_codename = .latest_ubuntu_lts_series(release_date)) %>%
+        dplyr::ungroup()
 
-    return(dplyr::ungroup(r_versions_data))
+    return(data)
 }
 
 .latest_ubuntu_lts_series <- function(date) {
-    ubuntu_version_data <- utils::read.csv("/usr/share/distro-info/ubuntu.csv", stringsAsFactors = FALSE)
+    data <- utils::read.csv("/usr/share/distro-info/ubuntu.csv", stringsAsFactors = FALSE) %>%
+        dplyr::filter(
+            as.Date(release) < as.Date(date),
+            version %in% grep("LTS", version, value = TRUE)
+        ) %>%
+        utils::tail(1)
 
-    is_released <- as.Date(ubuntu_version_data$release) < date
-    is_lts <- ubuntu_version_data$version %in% grep("LTS", ubuntu_version_data$version, value = TRUE)
-
-    latest_lts <- utils::tail(ubuntu_version_data[is_released & is_lts, ], 1)
-
-    return(latest_lts$series)
+    return(data$series)
 }
 
 .latest_rspm_cran_url_linux <- function(date, distro_version_name) {
@@ -117,8 +119,15 @@ rstudio_versions <- function(n_versions = 10) {
     return(is_available)
 }
 
+.latest_ctan_url <- function(date) {
+    url <- dplyr::if_else(
+        is.na(date),
+        "http://mirror.ctan.org/systems/texlive/tlnet",
+        paste0("http://www.texlive.info/tlnet-archive/", format(date, "%Y/%m/%d"), "/tlnet")
+    )
+    return(url)
+}
 
-github_rstudio_tags <- rstudio_versions(n_versions = 10)
 
 df_args <- .r_versions_data(min_version = 4.0) %>%
     dplyr::rowwise() %>%
@@ -126,7 +135,7 @@ df_args <- .r_versions_data(min_version = 4.0) %>%
         cran = .latest_rspm_cran_url_linux(freeze_date, ubuntu_codename),
     ) %>%
     dplyr::ungroup() %>%
-    tidyr::expand_grid(github_rstudio_tags) %>%
+    tidyr::expand_grid(rstudio_versions(n_versions = 10)) %>%
     dplyr::filter(freeze_date > commit_date | is.na(freeze_date)) %>%
     dplyr::rowwise() %>%
     dplyr::filter(.is_rstudio_deb_url(rstudio_version, ubuntu_codename)) %>%
@@ -135,6 +144,7 @@ df_args <- .r_versions_data(min_version = 4.0) %>%
     dplyr::slice_tail(n = 1) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
+        ctan_url = .latest_ctan_url(freeze_date),
         r_latest = dplyr::if_else(dplyr::row_number() == nrow(.), TRUE, FALSE)
     ) %>%
     dplyr::rename(r_version = version) %>%
