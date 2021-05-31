@@ -73,6 +73,9 @@ if [ "${INSTALL_HTTPGD}" = "true" ]; then
         libfontconfig1-dev"
     R_PACKAGES="${R_PACKAGES=} \
         httpgd"
+
+    # for VS Code R extention
+    echo "options(vsc.use_httpgd = TRUE)" >> ${R_HOME}/etc/Rprofile.site
 fi
 
 ## Add httpgd dependencies and httpgd to the list
