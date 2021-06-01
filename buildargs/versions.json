@@ -52,7 +52,7 @@
       "r_version": "4.1.0",
       "ubuntu_codename": "focal",
       "cran": "https://packagemanager.rstudio.com/all/__linux__/focal/latest",
-      "rstudio_version": "1.4.1106",
+      "rstudio_version": "1.4.1717",
       "ctan_url": "http://mirror.ctan.org/systems/texlive/tlnet",
       "r_latest": true
     }
