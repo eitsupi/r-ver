@@ -235,5 +235,5 @@ jobs:
             org.opencontainers.image.title=${{ steps.prep-tidyverse.outputs.image }}:${{ matrix.r_version }}
           cache-from: |
             type=registry,ref=${{ steps.prep-editorsupports.outputs.image }}:${{ matrix.r_version }}
-            type=registry,ref=${{ steps.prep-r-tidyverse.outputs.image }}:${{ matrix.r_version }}
+            type=registry,ref=${{ steps.prep-tidyverse.outputs.image }}:${{ matrix.r_version }}
           cache-to: type=inline
