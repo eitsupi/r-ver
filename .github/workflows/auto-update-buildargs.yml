@@ -21,8 +21,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3.10.0
         with:
-          committer: GitHub <noreply@github.com>
-          author: GitHub <noreply@github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           commit-message: Automated update for build args
           signoff: false
           branch: auto-update/buildargs
