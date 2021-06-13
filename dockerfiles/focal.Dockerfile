@@ -46,11 +46,11 @@ SHELL ["/bin/bash", "-c"]
 
 FROM r-ver AS editorsupports
 
-RUN /tmp/scripts/install_editorsupports.sh
+RUN source /etc/bash.bashrc && /tmp/scripts/install_editorsupports.sh
 
 
 # tidyverse, install the tidyverse packages
 
 FROM editorsupports AS tidyverse
 
-RUN /rocker_scripts/install_tidyverse.sh
+RUN source /etc/bash.bashrc && /rocker_scripts/install_tidyverse.sh
