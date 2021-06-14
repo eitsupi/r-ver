@@ -39,18 +39,18 @@ COPY scripts /tmp/scripts
 
 RUN /tmp/scripts/fix_cran_arm.sh
 
-SHELL ["/bin/bash", "-c"]
+SHELL ["/bin/bash", "-c", "-l"]
 
 
 # editorsupports, install packages for IDE
 
 FROM r-ver AS editorsupports
 
-RUN source /etc/bash.bashrc && /tmp/scripts/install_editorsupports.sh
+RUN /tmp/scripts/install_editorsupports.sh
 
 
 # tidyverse, install the tidyverse packages
 
 FROM editorsupports AS tidyverse
 
-RUN source /etc/bash.bashrc && /rocker_scripts/install_tidyverse.sh
+RUN /rocker_scripts/install_tidyverse.sh
