@@ -8,7 +8,7 @@ RUN git clone https://github.com/rocker-org/rocker-versioned2.git
 
 # builder, install R
 
-FROM ubuntu:focal-20210416 AS builder
+FROM ubuntu:focal-20210609 AS builder
 
 ARG VARIANT=devel
 ARG CRAN_URL=https://cloud.r-project.org
