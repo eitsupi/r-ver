@@ -6,11 +6,11 @@ This project is based on [rocker-org/versioned2](https://github.com/rocker-org/r
 
 ## Targets
 
-- [ ] Multi CPU architecture images.
-- [ ] Scheduled build.
-- [ ] Various annotations.
+- [x] Multi CPU architecture images.
+- [x] Scheduled build.
+- [x] Various annotations.
 - [ ] Automatic test.
-- [ ] Automatic update.(Pull Request)
+- [x] Automatic update.(Pull Request)
 
 ## License
 
