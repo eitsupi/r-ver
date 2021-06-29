@@ -98,7 +98,7 @@ fi
 
 ## Install R packages
 if [ -n "${R_PACKAGES}" ]; then
-    install2.r --error --skipinstalled -r $CRAN -n $NCPUS $R_PACKAGES
+    install2.r --error --skipinstalled -n $NCPUS $R_PACKAGES
 fi
 
 
