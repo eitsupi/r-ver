@@ -3,7 +3,8 @@
 FROM alpine/git AS source
 
 WORKDIR /tmp
-RUN git clone https://github.com/rocker-org/rocker-versioned2.git
+RUN git clone https://github.com/eitsupi/rocker-versioned2.git
+RUN cd rocker-versioned2 && git checkout b5469fc63d96883f011c89e39874df621f63dca8
 
 
 # builder, install R
@@ -36,10 +37,6 @@ FROM builder AS r-ver
 
 COPY --from=source /tmp/rocker-versioned2/scripts/ /rocker_scripts/
 COPY scripts /tmp/scripts
-
-RUN /tmp/scripts/fix_cran_arm.sh
-
-SHELL ["/bin/bash", "-c", "-l"]
 
 
 # editorsupports, install packages for IDE
