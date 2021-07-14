@@ -3,9 +3,8 @@
 FROM alpine/git AS source
 
 WORKDIR /tmp
-RUN git clone https://github.com/eitsupi/rocker-versioned2.git
-RUN cd rocker-versioned2 && git checkout b5469fc63d96883f011c89e39874df621f63dca8
-
+RUN git clone https://github.com/rocker-org/rocker-versioned2
+RUN cd rocker-versioned2
 
 # builder, install R
 
