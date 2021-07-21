@@ -4,13 +4,23 @@
 
 This project is based on [rocker-org/versioned2](https://github.com/rocker-org/rocker-versioned2).
 
+Since RStudio Server is currently only available for amd64, build `ghcr.io/eitsupi/r-ver/editorsupports` with [the languageserver package](https://github.com/REditorSupport/languageserver), etc. installed instead of RStudio in `rocker/rstudio`.
+
+In addition, images with the tidyverse package already installed (like `rocker/tidyverse`) can be pulled as follows.
+
+```shell
+$ docker pull ghcr.io/eitsupi/r-ver/tidyverse:latest
+```
+
+See [the Dockerfile](./dockerfiles/focal.Dockerfile) for details.
+
 ## Targets
 
-- [ ] Multi CPU architecture images.
-- [ ] Scheduled build.
-- [ ] Various annotations.
+- [x] Multi CPU architecture images.
+- [x] Scheduled build.
+- [x] Various annotations.
 - [ ] Automatic test.
-- [ ] Automatic update.(Pull Request)
+- [x] Automatic update.(Pull Request)
 
 ## License
 
