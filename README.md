@@ -4,7 +4,7 @@
 
 This project is based on [rocker-org/versioned2](https://github.com/rocker-org/rocker-versioned2).
 
-Since RStudio Server is currently only available for amd64, build `ghcr.io/eitsupi/r-ver/editorsupports` with [the languageserver package](https://github.com/REditorSupport/languageserver), etc. installed instead of RStudio in `rocker/rstudio`.
+Since RStudio Server is currently only available for amd64, build amd64/arm64 multi-arch image `ghcr.io/eitsupi/r-ver/editorsupports` with [the languageserver package](https://github.com/REditorSupport/languageserver), etc. installed instead of RStudio in `rocker/rstudio`.
 
 In addition, images with the tidyverse package already installed (like `rocker/tidyverse`) can be pulled as follows.
 
