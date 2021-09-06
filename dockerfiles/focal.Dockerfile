@@ -8,7 +8,7 @@ RUN cd rocker-versioned2
 
 # builder, install R
 
-FROM ubuntu:focal-20210723 AS builder
+FROM ubuntu:focal-20210827 AS builder
 
 ARG VARIANT=devel
 ARG CRAN_URL=https://cloud.r-project.org
