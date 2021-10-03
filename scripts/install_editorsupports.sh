@@ -2,7 +2,7 @@
 set -e
 
 # build ARGs
-NCPUS=${NCPUS:-1}
+NCPUS=${NCPUS:--1}
 
 INSTALL_RADIAN=${1:-"true"}
 INSTALL_DEVTOOLS=${2:-"true"}
