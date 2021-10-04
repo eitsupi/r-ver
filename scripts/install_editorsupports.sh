@@ -85,7 +85,7 @@ fi
 ## Install apt packages
 if [ -n "${APT_PACKAGES}" ]; then
     apt-get update
-    apt-get -y --no-install-recommends install "$APT_PACKAGES"
+    apt-get install -y --no-install-recommends "$APT_PACKAGES"
 fi
 
 ## Install Python packages
