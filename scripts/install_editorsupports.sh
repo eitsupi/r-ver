@@ -85,18 +85,18 @@ fi
 ## Install apt packages
 if [ -n "${APT_PACKAGES}" ]; then
     apt-get update
-    apt-get install -y --no-install-recommends "$APT_PACKAGES"
+    apt-get install -y --no-install-recommends ${APT_PACKAGES}
 fi
 
 ## Install Python packages
 # TODO: install radian on python pre-installed images.
 if [ -n "${PYTHON_PACKAGES}" ]; then
-    python3 -m pip --no-cache-dir install "$PYTHON_PACKAGES"
+    python3 -m pip --no-cache-dir install ${PYTHON_PACKAGES}
 fi
 
 ## Install R packages
 if [ -n "${R_PACKAGES}" ]; then
-    install2.r --error --skipinstalled -n "$NCPUS" "$R_PACKAGES"
+    install2.r --error --skipinstalled -n ${NCPUS} ${R_PACKAGES}
 fi
 
 
