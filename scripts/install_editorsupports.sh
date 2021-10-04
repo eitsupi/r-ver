@@ -73,9 +73,6 @@ if [ "${INSTALL_HTTPGD}" = "true" ]; then
         libfontconfig1-dev"
     R_PACKAGES="${R_PACKAGES=} \
         httpgd"
-
-    # for VS Code R extention
-    echo "options(vsc.use_httpgd = TRUE)" >> ${R_HOME}/etc/Rprofile.site
 fi
 
 ## Add httpgd dependencies and httpgd to the list
@@ -87,18 +84,18 @@ fi
 # Install packages
 ## Install apt packages
 if [ -n "${APT_PACKAGES}" ]; then
-    apt-get update -qq && apt-get -y --no-install-recommends install $APT_PACKAGES
+    apt-get update -qq && apt-get -y --no-install-recommends install "$APT_PACKAGES"
 fi
 
 ## Install Python packages
 # TODO: install radian on python pre-installed images.
 if [ -n "${PYTHON_PACKAGES}" ]; then
-    python3 -m pip --no-cache-dir install $PYTHON_PACKAGES
+    python3 -m pip --no-cache-dir install "$PYTHON_PACKAGES"
 fi
 
 ## Install R packages
 if [ -n "${R_PACKAGES}" ]; then
-    install2.r --error --skipinstalled -n $NCPUS $R_PACKAGES
+    install2.r --error --skipinstalled -n "$NCPUS" "$R_PACKAGES"
 fi
 
 
