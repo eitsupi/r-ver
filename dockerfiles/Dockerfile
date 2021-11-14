@@ -10,5 +10,5 @@ RUN /tmp/scripts/install_editorsupports.sh
 # tidyverse, install the tidyverse packages
 
 FROM editorsupports AS tidyverse
-
+ENV ARROW_R_DEV=TRUE
 RUN /rocker_scripts/install_tidyverse.sh
