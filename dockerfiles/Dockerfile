@@ -11,4 +11,7 @@ RUN /tmp/scripts/install_editorsupports.sh
 
 FROM editorsupports AS tidyverse
 ENV ARROW_R_DEV=TRUE
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends cmake \
+    && rm -rf /var/lib/apt/lists/*
 RUN /rocker_scripts/install_tidyverse.sh
