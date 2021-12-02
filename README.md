@@ -12,7 +12,7 @@ In addition, images with the tidyverse package already installed (like `rocker/t
 $ docker pull ghcr.io/eitsupi/r-ver/tidyverse:latest
 ```
 
-See [the Dockerfile](./dockerfiles/focal.Dockerfile) for details.
+See [the Dockerfile](./dockerfiles/Dockerfile) for details.
 
 ## Targets
 
