@@ -1,6 +1,6 @@
 # editorsupports, install packages for IDE
 
-FROM docker.io/rocker/r-ver:4.1.2@sha256:4f0d91faf933de445211aea823aadcec15cd4c0d7bfaa8654731546827284d67 AS editorsupports
+FROM docker.io/rocker/r-ver:4.1.2@sha256:a943c6c2385e4ada11e0f0e5eefca7a4eed7d94b0e28375617dfc2a12c711bfe AS editorsupports
 
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 COPY scripts /tmp/scripts
